@@ -8,7 +8,12 @@
 
 int main(void) {
     pid_t cpid[3] = {0}; 
-    int ret = 0;   
+    int ret = 0;  
+    char c = 'X';
+
+    int p1[2], p2[2];
+    pipe(p1);
+    pipe(p2); 
 
     setbuf(stdout, NULL);
 
@@ -18,7 +23,9 @@ int main(void) {
         return 0;
     }
     else if (0 == cpid[0]) { // CHILD-1
+	read(p1[0], &c, 1);
         printf("CHILD-1 (PID=%d) is running.\n", getpid());
+	write(p2[1], &c, 1);
         exit(0);
     }
 
@@ -29,6 +36,7 @@ int main(void) {
     }
     else if (0 == cpid[1]) { // CHILD-2
         printf("CHILD-2 (PID=%d) is running.\n", getpid());
+	write(p1[1], &c, 1);
         exit(0);
     }
     
@@ -38,6 +46,7 @@ int main(void) {
         return 0;
     }
     else if (0 == cpid[2]) { // CHILD-3
+	read(p2[0], &c, 1);
         printf("CHILD-3 (PID=%d) is running.\n", getpid());
         exit(0);     
     }
