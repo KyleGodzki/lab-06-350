@@ -9,7 +9,7 @@
 int main(void) {
     pid_t cpid[3] = {0}; 
     int ret = 0;
-    char c = 'X'
+    char c = 'Z';
     
     int p1[2], p2[2];
 
